@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Fun! — Kids Practice (5–7)</title>
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --grad-1: linear-gradient(135deg, #8EC5FC 0%, #E0C3FC 100%);
+      --grad-2: linear-gradient(135deg, #FAD0C4 0%, #FFD1FF 100%);
+      --grad-3: linear-gradient(135deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);
+      --grad-4: linear-gradient(135deg, #C1E3FF 0%, #F5F7FA 100%);
+    }
+    html, body { height: 100%; }
+    body { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
+    /* Cute floating background blobs */
+    .blob { position: absolute; border-radius: 9999px; filter: blur(40px); opacity: 0.3; }
+    .blob-1 { width: 260px; height: 260px; top: -40px; left: -40px; background: #a5b4fc; animation: float 10s ease-in-out infinite; }
+    .blob-2 { width: 220px; height: 220px; bottom: -40px; right: -40px; background: #fca5a5; animation: float 12s ease-in-out infinite reverse; }
+    .blob-3 { width: 160px; height: 160px; bottom: 20%; left: -30px; background: #86efac; animation: float 14s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(12px) } }
+    /* Nice focus style */
+    .focus-ring:focus { outline: none; box-shadow: 0 0 0 4px rgba(59, 130, 246, .35); }
+    /* Hide (for view switching) */
+    .hidden-view { display: none; }
+    /* Smooth fade */
+    .fade-enter { opacity: 0; transform: translateY(6px); }
+    .fade-enter-active { opacity: 1; transform: translateY(0); transition: all .35s ease; }
+    /* Timer bar */
+    .timer-bar { transition: width .1s linear; }
+  </style>
+  <!--
+    How to run:
+    1) Save this file as "math_practice_kids_en.html".
+    2) Double-click it to open in your browser (Chrome / Edge / Firefox).
+    3) Internet connection is used only to load Tailwind and Google Fonts.
+  -->
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-50 via-pink-50 to-amber-50 relative overflow-x-hidden">
+  <!-- Background blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <header class="relative z-10">
+    <div class="mx-auto max-w-5xl px-4 pt-8">
+      <div class="rounded-3xl p-6 md:p-8 shadow-xl" style="background: var(--grad-1);">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-indigo-900 drop-shadow-sm">
+          Math Fun! <span class="text-indigo-700">Learn & Play</span> ✨
+        </h1>
+        <p class="mt-3 text-indigo-900/80 text-sm md:text-base max-w-2xl">
+          A simple, colorful app to practice <span class="font-semibold">Addition</span>, <span class="font-semibold">Subtraction</span>, <span class="font-semibold">Multiplication</span>, and <span class="font-semibold">Division</span> for kids aged 5–7.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 mx-auto max-w-5xl px-4 py-8">
+    <!-- LEARN VIEW -->
+    <section id="view-learn" class="space-y-8">
+      <!-- Operation cards -->
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Addition -->
+        <article class="rounded-3xl shadow-xl p-6" style="background: var(--grad-4);">
+          <h2 class="text-2xl font-extrabold text-sky-900">Addition ➕</h2>
+          <p class="text-sky-900/80 mt-2">
+            We put <strong>addends</strong> together to find the <strong>sum</strong>.
+          </p>
+          <div class="mt-4 text-sky-900/90">
+            <div class="inline-block rounded-2xl bg-white/70 px-4 py-2 shadow">
+              Example: <span class="font-semibold">3</span> + <span class="font-semibold">2</span> = <span class="font-semibold">5</span>
+            </div>
+          </div>
+        </article>
+        <!-- Subtraction -->
+        <article class="rounded-3xl shadow-xl p-6" style="background: var(--grad-2);">
+          <h2 class="text-2xl font-extrabold text-fuchsia-900">Subtraction ➖</h2>
+          <p class="text-fuchsia-900/80 mt-2">
+            We take away the <strong>subtrahend</strong> from the <strong>minuend</strong> to get the <strong>difference</strong>.
+          </p>
+          <div class="mt-4 text-fuchsia-900/90">
+            <div class="inline-block rounded-2xl bg-white/70 px-4 py-2 shadow">
+              Example: <span class="font-semibold">7</span> − <span class="font-semibold">4</span> = <span class="font-semibold">3</span>
+            </div>
+          </div>
+        </article>
+        <!-- Multiplication -->
+        <article class="rounded-3xl shadow-xl p-6" style="background: var(--grad-3);">
+          <h2 class="text-2xl font-extrabold text-rose-900">Multiplication ✖️</h2>
+          <p class="text-rose-900/80 mt-2">
+            We multiply two <strong>factors</strong> to get the <strong>product</strong>.
+          </p>
+          <div class="mt-4 text-rose-900/90">
+            <div class="inline-block rounded-2xl bg-white/70 px-4 py-2 shadow">
+              Example: <span class="font-semibold">3</span> × <span class="font-semibold">2</span> = <span class="font-semibold">6</span>
+            </div>
+          </div>
+        </article>
+        <!-- Division -->
+        <article class="rounded-3xl shadow-xl p-6" style="background: var(--grad-1);">
+          <h2 class="text-2xl font-extrabold text-indigo-900">Division ➗</h2>
+          <p class="text-indigo-900/80 mt-2">
+            We split the <strong>dividend</strong> by the <strong>divisor</strong> to get the <strong>quotient</strong> and sometimes a <strong>remainder</strong>.
+          </p>
+          <div class="mt-4 text-indigo-900/90">
+            <div class="inline-block rounded-2xl bg-white/70 px-4 py-2 shadow">
+              Example: <span class="font-semibold">7</span> ÷ <span class="font-semibold">3</span> = <span class="font-semibold">2</span> remainder <span class="font-semibold">1</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Settings -->
+      <div class="rounded-3xl p-6 shadow-xl" style="background: var(--grad-4);">
+        <h3 class="text-xl md:text-2xl font-extrabold text-sky-900">Choose your level & difficulty</h3>
+        <div class="mt-4 grid md:grid-cols-2 gap-6">
+          <!-- Level -->
+          <div>
+            <label class="block text-sky-900/80 mb-2 font-semibold">Level</label>
+            <select id="level" class="w-full rounded-2xl px-4 py-3 bg-white/80 shadow focus-ring">
+              <option value="k1">Kindergarten 1 (Addition)</option>
+              <option value="k2">Kindergarten 2 (Addition & Subtraction)</option>
+              <option value="p1">Primary 1 (Add, Subtract & Multiply)</option>
+              <option value="p2">Primary 2 (Add, Subtract, Multiply & Divide)</option>
+            </select>
+          </div>
+          <!-- Difficulty -->
+          <div>
+            <label class="block text-sky-900/80 mb-2 font-semibold">Difficulty</label>
+            <div class="flex gap-3">
+              <label class="flex-1">
+                <input type="radio" name="difficulty" value="easy" class="peer hidden" checked>
+                <div class="rounded-2xl bg-white/80 px-4 py-3 text-center shadow cursor-pointer peer-checked:ring-4 ring-sky-300">Easy (1-digit)</div>
+              </label>
+              <label class="flex-1">
+                <input type="radio" name="difficulty" value="hard" class="peer hidden">
+                <div class="rounded-2xl bg-white/80 px-4 py-3 text-center shadow cursor-pointer peer-checked:ring-4 ring-rose-300">Hard (2-digit)</div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <button id="startBtn" class="rounded-2xl px-6 py-3 font-semibold text-white shadow-lg focus-ring" style="background: linear-gradient(90deg,#6366F1,#7C3AED);">Start Game ▶</button>
+          <span class="text-sky-900/70 text-sm">10 questions • 10s per question • up to 1000 points each</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME VIEW -->
+    <section id="view-game" class="hidden-view">
+      <div class="grid lg:grid-cols-3 gap-6">
+        <!-- Left: Score & Info -->
+        <aside class="lg:col-span-1 space-y-4">
+          <div class="rounded-3xl p-5 shadow-xl" style="background: var(--grad-2);">
+            <h3 class="text-lg font-extrabold text-fuchsia-900">Progress</h3>
+            <div class="mt-3 grid grid-cols-2 gap-3 text-fuchsia-900/90">
+              <div class="rounded-2xl bg-white/80 p-3 text-center shadow">
+                <div class="text-xs uppercase tracking-wide">Question</div>
+                <div id="qNum" class="text-2xl font-extrabold">1/10</div>
+              </div>
+              <div class="rounded-2xl bg-white/80 p-3 text-center shadow">
+                <div class="text-xs uppercase tracking-wide">Total Score</div>
+                <div id="totalScore" class="text-2xl font-extrabold">0</div>
+              </div>
+              <div class="rounded-2xl bg-white/80 p-3 text-center shadow">
+                <div class="text-xs uppercase tracking-wide">Correct</div>
+                <div id="correctCount" class="text-2xl font-extrabold text-emerald-700">0 ✅</div>
+              </div>
+              <div class="rounded-2xl bg-white/80 p-3 text-center shadow">
+                <div class="text-xs uppercase tracking-wide">Wrong</div>
+                <div id="wrongCount" class="text-2xl font-extrabold text-rose-700">0 ❌</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-3xl p-5 shadow-xl" style="background: var(--grad-1);">
+            <h3 class="text-lg font-extrabold text-indigo-900">Timer & Points</h3>
+            <div class="mt-3 bg-white/70 rounded-2xl p-4 shadow">
+              <div class="flex justify-between text-sm text-indigo-900/80">
+                <span>Time left</span>
+                <span id="timeText" class="font-semibold">10.0s</span>
+              </div>
+              <div class="mt-2 h-3 w-full bg-indigo-100 rounded-full overflow-hidden">
+                <div id="timerBar" class="h-3 bg-indigo-500 timer-bar" style="width: 100%"></div>
+              </div>
+              <div class="mt-3 flex justify-between text-sm text-indigo-900/80">
+                <span>Points this question</span>
+                <span id="livePoints" class="font-semibold">1000</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Right: Question Card -->
+        <div class="lg:col-span-2">
+          <div class="rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden" style="background: var(--grad-3);">
+            <div class="absolute -right-6 -top-6 text-7xl opacity-20 select-none">🎯</div>
+            <h3 class="text-2xl md:text-3xl font-extrabold text-rose-900">Solve the operation</h3>
+
+            <div id="questionWrap" class="mt-6 fade-enter">
+              <div class="text-5xl md:text-6xl font-extrabold text-rose-900 tracking-wide" id="questionText">3 + 2 = ?</div>
+
+              <!-- Single answer input (for +, -, ×) -->
+              <div id="singleAnswer" class="mt-6">
+                <label class="block text-rose-900/80 mb-2 font-semibold">Your answer</label>
+                <input id="answerInput" type="number" inputmode="numeric" class="w-full rounded-2xl px-4 py-3 bg-white/90 shadow focus-ring text-2xl" placeholder="Type a number" />
+              </div>
+
+              <!-- Division answer inputs -->
+              <div id="divisionAnswer" class="mt-6 hidden">
+                <label class="block text-rose-900/80 mb-2 font-semibold">Your answer</label>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <span class="text-xs text-rose-900/70">Quotient</span>
+                    <input id="answerQuo" type="number" inputmode="numeric" class="w-full rounded-2xl px-4 py-3 bg-white/90 shadow focus-ring text-2xl" placeholder="e.g., 2" />
+                  </div>
+                  <div>
+                    <span class="text-xs text-rose-900/70">Remainder</span>
+                    <input id="answerRem" type="number" inputmode="numeric" class="w-full rounded-2xl px-4 py-3 bg-white/90 shadow focus-ring text-2xl" placeholder="e.g., 1" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 flex flex-wrap items-center gap-3">
+                <button id="submitBtn" class="rounded-2xl px-6 py-3 font-semibold text-white shadow-lg focus-ring disabled:opacity-60" style="background: linear-gradient(90deg,#EA580C,#F97316);">Check ✅</button>
+                <button id="quitBtn" class="rounded-2xl px-6 py-3 font-semibold text-rose-700 bg-white/80 shadow focus-ring">Quit</button>
+              </div>
+
+              <!-- Feedback -->
+              <div id="feedback" class="mt-6 hidden">
+                <div id="feedbackBox" class="rounded-3xl bg-white/80 p-5 shadow flex items-center gap-4">
+                  <div id="feedbackEmoji" class="text-5xl">🎉</div>
+                  <div>
+                    <div id="feedbackTitle" class="text-xl font-extrabold text-rose-900">Great job!</div>
+                    <div id="feedbackText" class="text-rose-900/80 text-sm">Loading next question…</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUMMARY VIEW -->
+    <section id="view-summary" class="hidden-view">
+      <div class="rounded-3xl p-8 shadow-xl text-center" style="background: var(--grad-1);">
+        <div class="text-6xl mb-2">🏁</div>
+        <h3 class="text-3xl font-extrabold text-indigo-900">Great work!</h3>
+        <p class="text-indigo-900/80 mt-2">Here are your results:</p>
+        <div class="mt-6 grid sm:grid-cols-3 gap-4 text-indigo-900">
+          <div class="rounded-2xl bg-white/80 p-4 shadow">
+            <div class="text-xs uppercase tracking-wide">Total Score</div>
+            <div id="sumScore" class="text-2xl font-extrabold">0</div>
+          </div>
+          <div class="rounded-2xl bg-white/80 p-4 shadow">
+            <div class="text-xs uppercase tracking-wide">Correct</div>
+            <div id="sumCorrect" class="text-2xl font-extrabold text-emerald-700">0 ✅</div>
+          </div>
+          <div class="rounded-2xl bg-white/80 p-4 shadow">
+            <div class="text-xs uppercase tracking-wide">Wrong</div>
+            <div id="sumWrong" class="text-2xl font-extrabold text-rose-700">0 ❌</div>
+          </div>
+        </div>
+        <div class="mt-8 flex justify-center gap-3">
+          <button id="playAgainBtn" class="rounded-2xl px-6 py-3 font-semibold text-white shadow-lg focus-ring" style="background: linear-gradient(90deg,#6366F1,#7C3AED);">Play Again 🔁</button>
+          <button id="backToLearnBtn" class="rounded-2xl px-6 py-3 font-semibold text-indigo-700 bg-white/80 shadow focus-ring">Back to Learn</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="relative z-10 mx-auto max-w-5xl px-4 pb-10">
+    <div class="mt-8 text-center text-xs text-gray-500">
+      Built for kids • 10s per question • Max 1000 points per question
+    </div>
+  </footer>
+
+  <script>
+    // ------- App State -------
+    const state = {
+      level: 'k1',
+      difficulty: 'easy',
+      allowedOps: ['+'],
+      totalQuestions: 10,
+      qIndex: 0,
+      correct: 0,
+      wrong: 0,
+      totalScore: 0,
+      // current question fields
+      a: 0, b: 0, op: '+',
+      // division
+      dividend: 0, divisor: 0, quotient: 0, remainder: 0,
+      // timer
+      timerId: null,
+      timeTotal: 10.0,
+      timeLeft: 10.0,
+      livePoints: 1000,
+      inFeedback: false,
+    };
+
+    // ------- Elements -------
+    const viewLearn = document.getElementById('view-learn');
+    const viewGame = document.getElementById('view-game');
+    const viewSummary = document.getElementById('view-summary');
+
+    const startBtn = document.getElementById('startBtn');
+    const levelSel = document.getElementById('level');
+    const diffRadios = document.querySelectorAll('input[name="difficulty"]');
+
+    const qNum = document.getElementById('qNum');
+    const totalScoreEl = document.getElementById('totalScore');
+    const correctCount = document.getElementById('correctCount');
+    const wrongCount = document.getElementById('wrongCount');
+
+    const timeText = document.getElementById('timeText');
+    const timerBar = document.getElementById('timerBar');
+    const livePointsEl = document.getElementById('livePoints');
+
+    const questionText = document.getElementById('questionText');
+    const singleAnswer = document.getElementById('singleAnswer');
+    const divisionAnswer = document.getElementById('divisionAnswer');
+    const answerInput = document.getElementById('answerInput');
+    const answerQuo = document.getElementById('answerQuo');
+    const answerRem = document.getElementById('answerRem');
+    const submitBtn = document.getElementById('submitBtn');
+    const quitBtn = document.getElementById('quitBtn');
+
+    const feedback = document.getElementById('feedback');
+    const feedbackBox = document.getElementById('feedbackBox');
+    const feedbackEmoji = document.getElementById('feedbackEmoji');
+    const feedbackTitle = document.getElementById('feedbackTitle');
+    const feedbackText = document.getElementById('feedbackText');
+
+    const sumScore = document.getElementById('sumScore');
+    const sumCorrect = document.getElementById('sumCorrect');
+    const sumWrong = document.getElementById('sumWrong');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    const backToLearnBtn = document.getElementById('backToLearnBtn');
+
+    // ------- Helpers -------
+    function setView(which) {
+      viewLearn.classList.add('hidden-view');
+      viewGame.classList.add('hidden-view');
+      viewSummary.classList.add('hidden-view');
+      if (which === 'learn') viewLearn.classList.remove('hidden-view');
+      if (which === 'game') viewGame.classList.remove('hidden-view');
+      if (which === 'summary') viewSummary.classList.remove('hidden-view');
+    }
+
+    function updateAllowedOps() {
+      const lvl = state.level;
+      let ops = ['+'];
+      if (lvl === 'k1') ops = ['+'];
+      if (lvl === 'k2') ops = ['+','-'];
+      if (lvl === 'p1') ops = ['+','-','×'];
+      if (lvl === 'p2') ops = ['+','-','×','÷'];
+      state.allowedOps = ops;
+    }
+
+    function randInt(min, max) { // inclusive
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function genOperands() {
+      const hard = state.difficulty === 'hard';
+      const min = 0;
+      const max = hard ? 99 : 9;
+      return [randInt(min, max), randInt(min, max)];
+    }
+
+    function nextQuestion() {
+      state.qIndex++;
+      if (state.qIndex > state.totalQuestions) {
+        endGame();
+        return;
+      }
+      qNum.textContent = `${state.qIndex}/${state.totalQuestions}`;
+      feedback.classList.add('hidden');
+      submitBtn.disabled = false;
+      state.inFeedback = false;
+
+      // Pick op
+      const ops = state.allowedOps;
+      const op = ops[randInt(0, ops.length - 1)];
+      state.op = op;
+
+      // Generate operands according to op
+      if (op === '+' || op === '-' || op === '×') {
+        let [a, b] = genOperands();
+        // For subtraction, ensure non-negative results for kids
+        if (op === '-' && a < b) [a, b] = [b, a];
+        state.a = a; state.b = b;
+        questionText.textContent = `${a} ${op} ${b} = ?`;
+        singleAnswer.classList.remove('hidden');
+        divisionAnswer.classList.add('hidden');
+        answerInput.value = '';
+        answerInput.focus();
+      } else {
+        // Division: allow quotient and remainder
+        // Choose divisor >=1; avoid 0
+        const hard = state.difficulty === 'hard';
+        const divisor = randInt(1, hard ? 12 : 9);
+        // Build dividend from quotient & remainder to control numbers
+        const quotient = randInt(0, hard ? 30 : 9);
+        const remainder = randInt(0, divisor - 1);
+        const dividend = divisor * quotient + remainder;
+        state.dividend = dividend;
+        state.divisor = divisor;
+        state.quotient = quotient; // correct
+        state.remainder = remainder; // correct
+        questionText.textContent = `${dividend} ÷ ${divisor} = ? (q, r)`;
+        singleAnswer.classList.add('hidden');
+        divisionAnswer.classList.remove('hidden');
+        answerQuo.value = '';
+        answerRem.value = '';
+        answerQuo.focus();
+      }
+
+      // Reset timer & points
+      startTimer();
+      updateHUD();
+      animateEnter(document.getElementById('questionWrap'));
+    }
+
+    function animateEnter(el) {
+      el.classList.remove('fade-enter');
+      void el.offsetWidth; // reflow
+      el.classList.add('fade-enter');
+      setTimeout(() => {
+        el.classList.add('fade-enter-active');
+        setTimeout(() => el.classList.remove('fade-enter', 'fade-enter-active'), 400);
+      }, 10);
+    }
+
+    function startTimer() {
+      stopTimer();
+      state.timeLeft = state.timeTotal;
+      state.livePoints = 1000;
+      renderTimer();
+      state.timerId = setInterval(() => {
+        state.timeLeft = Math.max(0, state.timeLeft - 0.1);
+        // Points drop linearly with time
+        state.livePoints = Math.max(0, Math.floor(1000 * (state.timeLeft / state.timeTotal)));
+        renderTimer();
+        if (state.timeLeft <= 0) {
+          // Time up — mark wrong, show feedback, then next
+          stopTimer();
+          handleResult(false, true);
+        }
+      }, 100);
+    }
+
+    function stopTimer() {
+      if (state.timerId) {
+        clearInterval(state.timerId);
+        state.timerId = null;
+      }
+    }
+
+    function renderTimer() {
+      timeText.textContent = `${state.timeLeft.toFixed(1)}s`;
+      timerBar.style.width = `${(state.timeLeft / state.timeTotal) * 100}%`;
+      livePointsEl.textContent = state.livePoints;
+    }
+
+    function updateHUD() {
+      totalScoreEl.textContent = state.totalScore;
+      correctCount.textContent = `${state.correct} ✅`;
+      wrongCount.textContent = `${state.wrong} ❌`;
+    }
+
+    function checkAnswer() {
+      if (state.inFeedback) return;
+      if (state.op === '+' || state.op === '-' || state.op === '×') {
+        const val = Number(answerInput.value);
+        if (Number.isNaN(val)) return;
+        const correct = computeAnswer() === val;
+        stopTimer();
+        handleResult(correct, false);
+      } else {
+        const q = Number(answerQuo.value);
+        const r = Number(answerRem.value);
+        if (Number.isNaN(q) || Number.isNaN(r)) return;
+        const correct = (q === state.quotient && r === state.remainder);
+        stopTimer();
+        handleResult(correct, false);
+      }
+    }
+
+    function computeAnswer() {
+      const { a, b, op } = state;
+      if (op === '+') return a + b;
+      if (op === '-') return a - b;
+      if (op === '×') return a * b;
+      return null;
+    }
+
+    function handleResult(isCorrect, isTimeUp) {
+      state.inFeedback = true;
+      submitBtn.disabled = true;
+      let earned = 0;
+      if (isCorrect) {
+        earned = state.livePoints;
+        state.totalScore += earned;
+        state.correct += 1;
+        showFeedback('Awesome!','Great job!','🎉','emerald');
+      } else {
+        state.wrong += 1;
+        if (isTimeUp) {
+          showFeedback("Time's up!","No worries—let's try the next one.",'⏰','amber');
+        } else {
+          const correctText = buildCorrectText();
+          showFeedback('Almost!','Correct answer: ' + correctText,'🤓','rose');
+        }
+      }
+      updateHUD();
+      // Wait 3 seconds then next question or end
+      setTimeout(() => {
+        if (state.qIndex >= state.totalQuestions) {
+          endGame();
+        } else {
+          nextQuestion();
+        }
+      }, 3000);
+    }
+
+    function buildCorrectText() {
+      if (state.op === '+' || state.op === '-' || state.op === '×') {
+        return `${computeAnswer()}`;
+      } else {
+        return `q=${state.quotient}, r=${state.remainder}`;
+      }
+    }
+
+    function showFeedback(title, text, emoji, color) {
+      feedbackEmoji.textContent = emoji;
+      feedbackTitle.textContent = title;
+      feedbackText.textContent = text;
+      feedbackBox.classList.remove('bg-white/80');
+      feedbackBox.classList.add('bg-white/80');
+      feedback.classList.remove('hidden');
+    }
+
+    function startGame() {
+      // read settings
+      state.level = levelSel.value;
+      for (const r of diffRadios) if (r.checked) state.difficulty = r.value;
+      updateAllowedOps();
+
+      // reset stats
+      state.qIndex = 0;
+      state.correct = 0;
+      state.wrong = 0;
+      state.totalScore = 0;
+
+      setView('game');
+      nextQuestion();
+    }
+
+    function endGame() {
+      stopTimer();
+      // Show summary
+      sumScore.textContent = state.totalScore;
+      sumCorrect.textContent = `${state.correct} ✅`;
+      sumWrong.textContent = `${state.wrong} ❌`;
+      setView('summary');
+    }
+
+    function quitGame() {
+      stopTimer();
+      endGame();
+    }
+
+    // ------- Events -------
+    startBtn.addEventListener('click', startGame);
+    submitBtn.addEventListener('click', checkAnswer);
+    quitBtn.addEventListener('click', quitGame);
+
+    // Enter key submits
+    answerInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkAnswer(); });
+    answerQuo.addEventListener('keydown', (e) => { if (e.key === 'Enter') answerRem.focus(); });
+    answerRem.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkAnswer(); });
+
+    playAgainBtn.addEventListener('click', () => {
+      setView('learn');
+      // optionally auto-start with same settings? Keep it simple: go to learn
+    });
+    backToLearnBtn.addEventListener('click', () => setView('learn'));
+
+    // Initialize view
+    setView('learn');
+  </script>
+</body>
+</html>
