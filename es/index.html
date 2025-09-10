@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Juego de Matemáticas - Infantil & Primaria</title>
+  <!-- Tailwind CDN (requiere conexión a Internet) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--card-bg:linear-gradient(135deg,#fff7ed, #eef2ff)}
+    html,body{font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    .emoji-big{font-size:5.5rem;line-height:1}
+    .fade-in{animation:fadeIn .25s ease both}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+    .glass{backdrop-filter:blur(6px)}
+    .progress-bar{transition:width .1s linear}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-indigo-50 via-sky-50 to-rose-50 p-6">
+  <div class="max-w-4xl mx-auto">
+    <header class="mb-6 text-center">
+      <div class="inline-block px-6 py-3 rounded-3xl bg-gradient-to-r from-indigo-600 to-sky-500 text-white shadow-2xl">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Juego de Matemáticas</h1>
+        <p class="mt-1 text-sm opacity-90">Suma • Resta • Multiplica • Divide — Niños 5‑7 años</p>
+      </div>
+
+      <div class="mt-4 flex items-center justify-center gap-6">
+        <div class="text-sm text-gray-700">Puntos totales: <span id="total-score" class="font-bold text-indigo-700">0</span></div>
+        <div class="text-sm text-gray-700">Aciertos: <span id="score-correct">0</span></div>
+        <div class="text-sm text-gray-700">Fallos: <span id="score-wrong">0</span></div>
+      </div>
+    </header>
+
+    <main class="bg-white/60 rounded-3xl p-6 shadow-xl glass">
+
+      <!-- Pantalla de aprendizaje -->
+      <section id="learn-screen">
+        <h2 class="text-2xl font-bold text-indigo-700 mb-4">Aprendamos las 4 operaciones</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <article class="p-4 rounded-xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white shadow-md">
+            <h3 class="font-semibold text-indigo-800">Suma (+)</h3>
+            <p class="text-sm text-gray-700 mt-2">Elementos: <strong>Sumandos</strong> y el <strong>total / suma</strong>. Nos permite juntar cantidades.</p>
+            <p class="mt-3 font-mono text-indigo-600">Ejemplo: 3 + 2 = 5</p>
+          </article>
+
+          <article class="p-4 rounded-xl border border-yellow-100 bg-gradient-to-br from-yellow-50 to-white shadow-md">
+            <h3 class="font-semibold text-yellow-800">Resta (-)</h3>
+            <p class="text-sm text-gray-700 mt-2">Elementos: <strong>Minuendo</strong>, <strong>Sustraendo</strong> y <strong>Diferencia</strong>. Nos permite quitar una parte.</p>
+            <p class="mt-3 font-mono text-yellow-700">Ejemplo: 6 - 2 = 4</p>
+          </article>
+
+          <article class="p-4 rounded-xl border border-green-100 bg-gradient-to-br from-green-50 to-white shadow-md">
+            <h3 class="font-semibold text-green-800">Multiplicación (×)</h3>
+            <p class="text-sm text-gray-700 mt-2">Elementos: <strong>Factores</strong> y <strong>Producto</strong>. Es sumar el mismo número varias veces.</p>
+            <p class="mt-3 font-mono text-green-700">Ejemplo: 3 × 2 = 6</p>
+          </article>
+
+          <article class="p-4 rounded-xl border border-pink-100 bg-gradient-to-br from-pink-50 to-white shadow-md">
+            <h3 class="font-semibold text-pink-800">División (÷)</h3>
+            <p class="text-sm text-gray-700 mt-2">Elementos: <strong>Dividendo</strong>, <strong>Divisor</strong>, <strong>Cociente</strong> y posible <strong>Resto</strong>. Es repartir en partes iguales.</p>
+            <p class="mt-3 font-mono text-pink-700">Ejemplo: 7 ÷ 3 = 2 y resto 1</p>
+          </article>
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <label class="block font-semibold mb-1">Nivel de aprendizaje</label>
+            <select id="level" class="rounded-xl border p-3 w-64 shadow-sm">
+              <option value="inf1">Infantil 1 — Sumas</option>
+              <option value="inf2">Infantil 2 — Sumas y Restas</option>
+              <option value="pri1">Primaria 1 — Sumas, Restas, Multiplicaciones</option>
+              <option value="pri2">Primaria 2 — Todas las operaciones</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1">Dificultad</label>
+            <div class="flex gap-2">
+              <button id="easyBtn" class="px-4 py-2 rounded-lg border bg-white shadow-sm">Fácil (1 dígito)</button>
+              <button id="hardBtn" class="px-4 py-2 rounded-lg border bg-white shadow-sm">Difícil (2 dígitos)</button>
+            </div>
+          </div>
+
+          <div class="flex items-end">
+            <button id="startGame" class="bg-gradient-to-r from-emerald-500 to-indigo-600 text-white px-6 py-3 rounded-2xl font-bold shadow-2xl hover:scale-105 transition-transform">Empezar juego</button>
+          </div>
+        </div>
+
+        <p class="mt-4 text-sm text-gray-600">Consejo: usa <strong>Fácil</strong> para empezar y <strong>Difícil</strong> cuando ya controles bien los números.</p>
+      </section>
+
+      <!-- Pantalla de juego -->
+      <section id="game-screen" class="hidden">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex gap-4 items-center">
+            <div class="text-sm text-gray-700">Nivel: <span id="display-level" class="font-semibold"></span></div>
+            <div class="text-sm text-gray-700">Dificultad: <span id="display-diff" class="font-semibold"></span></div>
+          </div>
+          <div class="flex gap-4 items-center">
+            <div class="text-sm text-gray-700">Operaciones: <span id="progress">0</span>/10</div>
+            <button id="backBtn" class="text-sm text-indigo-600 underline">Volver</button>
+          </div>
+        </div>
+
+        <div class="rounded-2xl p-6 mb-4 bg-gradient-to-br from-white to-indigo-50 shadow-inner border border-indigo-100">
+          <div class="text-center">
+            <div id="problem" class="text-6xl font-extrabold text-indigo-800 mb-3">2 + 2 = ?</div>
+            <div id="extra-info" class="text-sm text-gray-600 mb-4">Introduce la respuesta y pulsa Comprobar</div>
+
+            <!-- Temporizador y puntos por pregunta -->
+            <div class="flex items-center justify-center gap-6 mb-4">
+              <div class="text-center">
+                <div class="text-xs text-gray-500">Tiempo restante</div>
+                <div id="time-left" class="text-2xl font-bold text-rose-600">10s</div>
+              </div>
+
+              <div class="w-56">
+                <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div id="time-bar" class="h-full bg-gradient-to-r from-rose-400 to-amber-400 progress-bar" style="width:100%"></div>
+                </div>
+                <div class="text-xs text-gray-500 text-center mt-1">Puntos por respuesta: <span id="points-this">1000</span></div>
+              </div>
+            </div>
+
+            <div id="answer-area" class="flex flex-col items-center gap-3">
+              <input id="answerInput" type="text" inputmode="numeric" class="w-56 text-center text-3xl rounded-2xl border p-3 shadow-md" autocomplete="off" />
+
+              <div id="division-inputs" class="hidden gap-2 items-center">
+                <input id="quotientInput" type="text" inputmode="numeric" placeholder="Cociente" class="w-36 text-center text-2xl rounded-lg border p-2" />
+                <div class="text-2xl">+</div>
+                <input id="remainderInput" type="text" inputmode="numeric" placeholder="Resto" class="w-24 text-center text-2xl rounded-lg border p-2" />
+              </div>
+
+              <div class="flex gap-3 mt-2">
+                <button id="checkBtn" class="bg-indigo-600 text-white px-6 py-2 rounded-full font-semibold shadow hover:scale-105 transition">Comprobar</button>
+                <button id="skipBtn" class="bg-gray-100 px-4 py-2 rounded-full shadow">Saltar</button>
+              </div>
+            </div>
+
+            <div id="feedback" class="mt-6 h-40 flex flex-col items-center justify-center"></div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <div class="text-sm text-gray-700">Aciertos: <span id="display-correct">0</span></div>
+          <div class="text-sm text-gray-700">Fallos: <span id="display-wrong">0</span></div>
+          <div class="text-sm text-gray-700">Intentos: <span id="attempts">0</span></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="text-center text-xs text-gray-600 mt-6">Guarda el archivo como <strong>juego_matematicas.html</strong> y ábrelo con doble clic. Requiere conexión para Tailwind y Google Fonts.</footer>
+  </div>
+
+  <script>
+    // --- Selectores ---
+    const learnScreen = document.getElementById('learn-screen');
+    const gameScreen = document.getElementById('game-screen');
+    const startGame = document.getElementById('startGame');
+    const levelSelect = document.getElementById('level');
+    const easyBtn = document.getElementById('easyBtn');
+    const hardBtn = document.getElementById('hardBtn');
+    const displayLevel = document.getElementById('display-level');
+    const displayDiff = document.getElementById('display-diff');
+    const problemEl = document.getElementById('problem');
+    const extraInfo = document.getElementById('extra-info');
+    const answerInput = document.getElementById('answerInput');
+    const checkBtn = document.getElementById('checkBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    const feedback = document.getElementById('feedback');
+    const backBtn = document.getElementById('backBtn');
+    const scoreCorrect = document.getElementById('score-correct');
+    const scoreWrong = document.getElementById('score-wrong');
+    const totalScoreEl = document.getElementById('total-score');
+    const attemptsEl = document.getElementById('attempts');
+    const progressEl = document.getElementById('progress');
+    const divisionInputs = document.getElementById('division-inputs');
+    const quotientInput = document.getElementById('quotientInput');
+    const remainderInput = document.getElementById('remainderInput');
+    const timeLeftEl = document.getElementById('time-left');
+    const timeBar = document.getElementById('time-bar');
+    const pointsThisEl = document.getElementById('points-this');
+    const displayCorrect = document.getElementById('display-correct');
+    const displayWrong = document.getElementById('display-wrong');
+
+    // Estado
+    let difficulty = 'easy';
+    let level = 'inf1';
+    let operators = ['+'];
+    let currentProblem = null;
+    let score = { correct: 0, wrong: 0, attempts: 0, totalPoints: 0 };
+    let progress = 0; // operaciones completadas
+
+    // Temporizador por pregunta
+    const QUESTION_TIME = 10; // segundos
+    const MAX_POINTS = 1000;
+    let timerInterval = null;
+    let timeRemaining = QUESTION_TIME;
+    let pointsThis = MAX_POINTS;
+    let feedbackTimeout = null;
+
+    // Inicializar dificultad
+    function setDifficulty(d) {
+      difficulty = d;
+      if (d === 'easy') {
+        easyBtn.classList.add('bg-emerald-100');
+        hardBtn.classList.remove('bg-emerald-100');
+      } else {
+        hardBtn.classList.add('bg-emerald-100');
+        easyBtn.classList.remove('bg-emerald-100');
+      }
+    }
+    easyBtn.addEventListener('click', () => setDifficulty('easy'));
+    hardBtn.addEventListener('click', () => setDifficulty('hard'));
+
+    // Operadores por nivel
+    function setOperatorsByLevel(lvl) {
+      level = lvl;
+      if (lvl === 'inf1') operators = ['+'];
+      else if (lvl === 'inf2') operators = ['+', '-'];
+      else if (lvl === 'pri1') operators = ['+', '-', '*'];
+      else if (lvl === 'pri2') operators = ['+', '-', '*', '/'];
+    }
+    levelSelect.addEventListener('change', (e) => setOperatorsByLevel(e.target.value));
+
+    function levelText(lvl){ switch(lvl){case 'inf1': return 'Infantil 1'; case 'inf2': return 'Infantil 2'; case 'pri1': return 'Primaria 1'; case 'pri2': return 'Primaria 2'; }}
+    function diffText(d){ return d==='easy'?'Fácil':'Difícil'; }
+
+    // Util
+    function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+    function genNumber(){ return difficulty==='easy'? randInt(1,9): randInt(10,99) }
+
+    // Generar problema
+    function generateProblem(){
+      const op = operators[randInt(0,operators.length-1)];
+      let a,b;
+      if(op==='+'){a=genNumber();b=genNumber();return {op,a,b,answer:a+b}} 
+      if(op==='-'){a=genNumber();b=genNumber(); if(b>a)[a,b]=[b,a]; return {op,a,b,answer:a-b}} 
+      if(op==='*'){ if(difficulty==='easy'){a=randInt(1,9);b=randInt(1,9)}else{a=randInt(2,12);b=randInt(2,9)} return {op,a,b,answer:a*b}} 
+      if(op==='/'){ let divisor = difficulty==='easy'?randInt(1,9):randInt(2,12); let quotient = difficulty==='easy'?randInt(0,9):randInt(0,15); let remainder = randInt(0, Math.max(0,divisor-1)); let dividend = divisor*quotient + remainder; if(dividend===0){dividend=divisor;quotient=1;remainder=0} return {op:'/',a:dividend,b:divisor,quotient,remainder} }
+    }
+
+    // Mostrar problema y arrancar temporizador
+    function showProblem(){
+      clearTimers();
+      currentProblem = generateProblem();
+      // actualizar UI
+      document.getElementById('display-level').textContent = levelText(levelSelect.value);
+      document.getElementById('display-diff').textContent = diffText(difficulty);
+      document.getElementById('progress').textContent = progress;
+      attemptsEl.textContent = score.attempts;
+      displayCorrect.textContent = score.correct;
+      displayWrong.textContent = score.wrong;
+      scoreCorrect.textContent = score.correct;
+      scoreWrong.textContent = score.wrong;
+      totalScoreEl.textContent = score.totalPoints;
+
+      if(currentProblem.op === '/'){
+        problemEl.textContent = `${currentProblem.a} ÷ ${currentProblem.b} = ?`;
+        divisionInputs.classList.remove('hidden');
+        answerInput.classList.add('hidden');
+        answerInput.value=''; quotientInput.value=''; remainderInput.value='';
+        extraInfo.textContent = 'Introduce cociente y resto y pulsa Comprobar.';
+      } else {
+        divisionInputs.classList.add('hidden');
+        answerInput.classList.remove('hidden');
+        answerInput.value='';
+        problemEl.textContent = `${currentProblem.a} ${currentProblem.op} ${currentProblem.b} = ?`;
+        extraInfo.textContent = 'Introduce la respuesta y pulsa Comprobar.';
+      }
+
+      // iniciar temporizador
+      timeRemaining = QUESTION_TIME;
+      pointsThis = MAX_POINTS;
+      updateTimerUI();
+      timerInterval = setInterval(() => {
+        timeRemaining -= 0.1; // decrece cada 100ms
+        if(timeRemaining < 0) timeRemaining = 0;
+        // calcular puntos proporcionales al tiempo restante
+        pointsThis = Math.round(MAX_POINTS * (timeRemaining / QUESTION_TIME));
+        updateTimerUI();
+        if(timeRemaining <= 0){
+          clearTimers();
+          // tratar como fallo por tiempo
+          handleAnswer(false, /*timeout*/ true);
+        }
+      }, 100);
+
+      answerInput.focus();
+    }
+
+    function updateTimerUI(){
+      timeLeftEl.textContent = `${Math.ceil(timeRemaining)}s`;
+      const pct = Math.max(0, (timeRemaining/QUESTION_TIME)*100);
+      timeBar.style.width = pct + '%';
+      pointsThisEl.textContent = pointsThis;
+    }
+
+    function clearTimers(){
+      if(timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      if(feedbackTimeout){ clearTimeout(feedbackTimeout); feedbackTimeout = null; }
+    }
+
+    // Manejar respuesta (correcta o no). timeout indica si fue por tiempo.
+    function handleAnswer(isCorrect, timeout=false){
+      // actualizar intentos
+      score.attempts += 1;
+      attemptsEl.textContent = score.attempts;
+
+      if(isCorrect){
+        score.correct += 1;
+        score.totalPoints += pointsThis;
+        progress += 1;
+        showFeedback(true, pointsThis);
+      } else {
+        score.wrong += 1;
+        progress += 1;
+        showFeedback(false, timeout);
+      }
+
+      // actualizar marcadores
+      scoreCorrect.textContent = score.correct;
+      scoreWrong.textContent = score.wrong;
+      displayCorrect.textContent = score.correct;
+      displayWrong.textContent = score.wrong;
+      totalScoreEl.textContent = score.totalPoints;
+      document.getElementById('progress').textContent = progress + '/10';
+
+      // esperar 3 segundos y siguiente problema o resumen
+      feedbackTimeout = setTimeout(() => {
+        clearTimers();
+        if(progress >= 10){ showSummary(); }
+        else { showProblem(); }
+      }, 3000);
+    }
+
+    // Comprobar respuesta al pulsar comprobar
+    function checkAnswer(){
+      if(!currentProblem) return;
+      clearInterval(timerInterval); timerInterval = null;
+
+      let correct = false;
+      if(currentProblem.op ==='/'){
+        const q = parseInt(quotientInput.value);
+        const r = parseInt(remainderInput.value);
+        correct = (!isNaN(q) && !isNaN(r) && q === currentProblem.quotient && r === currentProblem.remainder);
+      } else {
+        const val = parseInt(answerInput.value);
+        correct = (!isNaN(val) && val === currentProblem.answer);
+      }
+
+      handleAnswer(correct, false);
+    }
+
+    // Mostrar feedback
+    function showFeedback(isCorrect, pointsOrTimeout){
+      feedback.innerHTML = '';
+      const box = document.createElement('div');
+      box.className = 'w-full rounded-xl p-4 text-center bg-white/80 shadow-md';
+      box.classList.add('fade-in');
+      if(isCorrect){
+        box.innerHTML = `<div class="emoji-big">🎉</div><div class="mt-2 text-2xl font-bold text-emerald-700">¡Correcto!</div><div class="mt-1 text-sm text-gray-600">Has ganado <strong>${pointsOrTimeout}</strong> puntos</div>`;
+      } else {
+        let correctText = '';
+        if(currentProblem.op ==='/'){
+          correctText = `Cociente: ${currentProblem.quotient} — Resto: ${currentProblem.remainder}`;
+        } else {
+          correctText = `Respuesta correcta: ${currentProblem.answer}`;
+        }
+        if(pointsOrTimeout === true){ // timeout
+          box.innerHTML = `<div class="emoji-big">⏱️</div><div class="mt-2 text-2xl font-bold text-rose-600">Tiempo</div><div class="mt-1 text-sm text-gray-600">Se acabó el tiempo. ${correctText}</div>`;
+        } else {
+          box.innerHTML = `<div class="emoji-big">😅</div><div class="mt-2 text-2xl font-bold text-rose-600">Casi — Incorrecto</div><div class="mt-1 text-sm text-gray-600">${correctText}</div>`;
+        }
+      }
+      feedback.appendChild(box);
+    }
+
+    // Mostrar resumen final
+    function showSummary(){
+      clearTimers();
+      problemEl.textContent = '¡Juego terminado!';
+      feedback.innerHTML = `<div class="p-6 text-center"><div class="emoji-big">🏆</div><h3 class="mt-3 text-2xl font-bold">Resumen</h3><p class="mt-2">Aciertos: <strong>${score.correct}</strong> — Fallos: <strong>${score.wrong}</strong></p><p class="mt-1">Puntos totales: <strong>${score.totalPoints}</strong></p><div class="mt-4 flex gap-3 justify-center"><button id="playAgain" class="bg-indigo-600 text-white px-5 py-2 rounded-full">Jugar otra vez</button><button id="backToLearn" class="bg-white border px-5 py-2 rounded-full">Volver</button></div></div>`;
+      const playAgain = document.getElementById('playAgain');
+      const backToLearn = document.getElementById('backToLearn');
+      playAgain.addEventListener('click', () => { resetGame(); showProblem(); });
+      backToLearn.addEventListener('click', () => { resetGame(); gameScreen.classList.add('hidden'); learnScreen.classList.remove('hidden'); });
+    }
+
+    // Resetear juego
+    function resetGame(){
+      clearTimers();
+      score = { correct:0, wrong:0, attempts:0, totalPoints:0 };
+      progress = 0;
+      scoreCorrect.textContent = 0; scoreWrong.textContent = 0; attemptsEl.textContent = 0; totalScoreEl.textContent = 0;
+      displayCorrect.textContent = 0; displayWrong.textContent = 0; document.getElementById('progress').textContent = '0/10';
+      feedback.innerHTML = '';
+    }
+
+    // Eventos
+    startGame.addEventListener('click', ()=>{
+      setOperatorsByLevel(levelSelect.value);
+      setDifficulty(difficulty);
+      displayLevel.textContent = levelText(levelSelect.value);
+      displayDiff.textContent = diffText(difficulty);
+      learnScreen.classList.add('hidden');
+      gameScreen.classList.remove('hidden');
+      resetGame();
+      showProblem();
+    });
+
+    checkBtn.addEventListener('click', ()=>{ if(timerInterval) clearInterval(timerInterval); checkAnswer(); });
+    skipBtn.addEventListener('click', ()=>{ if(timerInterval) clearInterval(timerInterval); handleAnswer(false,false); });
+    backBtn.addEventListener('click', ()=>{ clearTimers(); gameScreen.classList.add('hidden'); learnScreen.classList.remove('hidden'); });
+
+    // Enter para comprobar
+    answerInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') { if(timerInterval) clearInterval(timerInterval); checkAnswer(); } });
+    if(quotientInput) quotientInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') { if(timerInterval) clearInterval(timerInterval); checkAnswer(); } });
+    if(remainderInput) remainderInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') { if(timerInterval) clearInterval(timerInterval); checkAnswer(); } });
+
+    // Inicial
+    setDifficulty('easy');
+    setOperatorsByLevel(levelSelect.value);
+  </script>
+</body>
+</html>
